@@ -1,6 +1,6 @@
-# agents.py
 from gemini_chat import GeminiChat  # Ensure this import path matches your project structure
 import prompts
+import logging
 
 gemini = GeminiChat()
 
@@ -15,6 +15,13 @@ class CodebasePlanningAgent:
     @staticmethod
     def plan_codebase(requirements):
         prompt = prompts.CODEBASE_PLANNING_PROMPT.format(requirements=requirements)
+        response = gemini.send_message(prompt)
+        return response
+
+class TaskPlannerAgent:
+    @staticmethod
+    def plan_to_tasks(codebase_plan):
+        prompt = prompts.TASK_PLANNING_PROMPT.format(codebase_plan=codebase_plan)
         response = gemini.send_message(prompt)
         return response
 
@@ -34,8 +41,10 @@ class CodeReviewAgent:
 
 class CodeRefactoringAgent:
     @staticmethod
-    def refactor_code(improvements):
-        prompt = prompts.CODE_REFACTORING_PROMPT.format(improvements=improvements)
+    def refactor_code(improvements, code):
+        # Assuming the improvements and code are passed as strings or suitable data structures
+        # The prompt should combine both the code and the improvements suggested for refactoring
+        prompt = prompts.CODE_REFACTORING_PROMPT.format(improvements=improvements, code=code)
         response = gemini.send_message(prompt)
         return response
 
